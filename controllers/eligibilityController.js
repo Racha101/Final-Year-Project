@@ -83,19 +83,21 @@ const createBloodType = async (req, res) => {
 // ✅ 3. Create Donation (Donation Form)
 const createDonation = async (req, res) => {
   try {
-    const { userID, bloodType, quantity, branchName } = req.body;
+    const { userID, bloodType, quantity = 1, branchID, branchName } = req.body;
 
     const donation = new Donation({
       userID,
       bloodType,
       quantity,
-      branchName
+      branchID
+      // branchName
     });
 
     await donation.save();
 
     res.json({ msg: "Donation recorded successfully", donation });
   } catch (err) {
+    console.log('err', err)
     res.status(500).json({ msg: "Failed to save donation" });
   }
 };
