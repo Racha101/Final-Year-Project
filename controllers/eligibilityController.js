@@ -1,6 +1,7 @@
 const Eligibility = require("../models/Eligibility");
 const Donation = require("../models/Donation");
 const BloodType = require("../models/BloodType");
+const Stock = require("../models/Stock");
 
 // ✅ 1. Submit eligibility form & calculate status
 const submitEligibilityForm = async (req, res) => {
@@ -95,6 +96,16 @@ const createDonation = async (req, res) => {
     });
 
     await donation.save();
+
+    let stock = await Stock.findOne({ branchID, bloodType });
+
+    if (stock) {
+      stock.quantity += quantity;
+      await stock.save();
+    } else {
+      stock = new Stock({ branchID, bloodType, quantity });
+      await stock.save();
+    }
 
     res.json({ msg: "Donation recorded successfully", donation });
   } catch (err) {
