@@ -89,7 +89,8 @@ const createDonation = async (req, res) => {
       userID,
       bloodType,
       quantity,
-      branchID
+      branchID,
+      donationDate: new Date()
       // branchName
     });
 
